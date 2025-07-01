@@ -1,26 +1,26 @@
 {
   "name": "shadcn-command",
   "version": "1.0.0",
-  "description": "Shadcn/UI Command component for Weweb",
-  "main": "src/Command.vue",
+  "description": "Shadcn/UI command component for Weweb",
+  "main": "src/command.vue",
+  "weweb": {
+    "componentPath": "./src/command.vue"
+  },
   "scripts": {
-    "serve": "vue-cli-service serve",
-    "build": "vue-cli-service build"
+    "serve": "webpack serve --mode development",
+    "build": "webpack --mode production"
   },
   "keywords": [
     "weweb",
     "shadcn",
     "ui",
-    "Command",
+    "command",
     "vue",
     "component"
   ],
-  "author": "Shadcn/UI for Weweb Community",
+  "author": "Shadcn/UI for Weweb",
   "license": "MIT",
   "dependencies": {
     "vue": "^3.3.4"
-  },
-  "devDependencies": {
-    "@vue/cli-service": "^5.0.8"
   }
 }
