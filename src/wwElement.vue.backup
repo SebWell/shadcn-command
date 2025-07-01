@@ -2,16 +2,16 @@
   <div 
     :class="cn(
       'flex h-full w-full flex-col overflow-hidden rounded-md bg-popover text-popover-foreground',
-      variant === 'dialog' ? 'fixed inset-0 z-50' : '',
-      customClass
+      content.variant === 'dialog' ? 'fixed inset-0 z-50' : '',
+      content.customClass
     )"
-    :style="customStyle"
+    :style="content.customStyle"
     @keydown="handleKeyDown"
     tabindex="0"
   >
     <!-- Backdrop for dialog variant -->
     <div
-      v-if="variant === 'dialog'"
+      v-if="content.variant === 'dialog'"
       class="fixed inset-0 z-50 bg-background/80 backdrop-blur-sm"
       @click="handleBackdropClick"
     />
@@ -20,7 +20,7 @@
     <div
       :class="cn(
         'relative flex h-full w-full flex-col overflow-hidden rounded-md bg-popover text-popover-foreground border',
-        variant === 'dialog' ? 'fixed left-[50%] top-[50%] z-50 max-h-[85vh] w-full max-w-[450px] translate-x-[-50%] translate-y-[-50%] animate-in fade-in-0 zoom-in-95 slide-in-from-left-1/2 slide-in-from-top-[48%]' : ''
+        content.variant === 'dialog' ? 'fixed left-[50%] top-[50%] z-50 max-h-[85vh] w-full max-w-[450px] translate-x-[-50%] translate-y-[-50%] animate-in fade-in-0 zoom-in-95 slide-in-from-left-1/2 slide-in-from-top-[48%]' : ''
       )"
     >
       <!-- Header with search -->
@@ -40,7 +40,7 @@
           :class="cn(
             'flex h-11 w-full rounded-md bg-transparent py-3 text-sm outline-none placeholder:text-muted-foreground disabled:cursor-not-allowed disabled:opacity-50'
           )"
-          :placeholder="placeholder || 'Type a command or search...'"
+          :placeholder="content.placeholder || 'Type a command or search...'"
           @input="handleSearch"
           @keydown="handleSearchKeyDown"
         />
@@ -54,7 +54,7 @@
             v-if="filteredGroups.length === 0"
             class="py-6 text-center text-sm text-muted-foreground"
           >
-            {{ emptyMessage || 'No results found.' }}
+            {{ content.emptyMessage || 'No results found.' }}
           </div>
 
           <!-- Command groups -->
@@ -132,11 +132,11 @@ export default {
 
     const filteredGroups = computed(() => {
       if (!searchTerm.value.trim()) {
-        return props.groups || []
+        return props.content.groups || []
       }
 
       const term = searchTerm.value.toLowerCase()
-      return (props.groups || []).map(group => ({
+      return (props.content.groups || []).map(group => ({
         ...group,
         items: group.items.filter(item => 
           item.label.toLowerCase().includes(term) ||
@@ -183,7 +183,7 @@ export default {
         searchTerm: searchTerm.value
       })
 
-      if (props.variant === 'dialog') {
+      if (props.content.variant === 'dialog') {
         emit('close')
       }
     }
@@ -225,7 +225,7 @@ export default {
           break
         case 'Escape':
           event.preventDefault()
-          if (props.variant === 'dialog') {
+          if (props.content.variant === 'dialog') {
             emit('close')
           }
           break
@@ -241,14 +241,14 @@ export default {
     }
 
     const handleBackdropClick = () => {
-      if (props.closeOnBackdrop !== false) {
+      if (props.content.closeOnBackdrop !== false) {
         emit('close')
       }
     }
 
     // Focus search input when component mounts or opens
     onMounted(() => {
-      if (props.open || props.variant !== 'dialog') {
+      if (props.open || props.content.variant !== 'dialog') {
         nextTick(() => {
           searchInput.value?.focus()
         })
